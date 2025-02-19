@@ -43,13 +43,33 @@ export default {
             message: "hello",
             mqttClient: null,
             mqttStatus: null,
-            clickCount: 0
+            clickCount: 0,
+            platformAPI: {}
         };
+    },
+
+    // imporat to mount 
+    mounted() {
+        // Subscribe to world click events
+        this.platformAPI = await requirejs("DS/PlatformAPI/PlatformAPI");
+        this.platformAPI.subscribe("3DEXPERIENCity.OnWorldClick", res => console.log(res));
+    },
+    beforeUnmount() {
+        // Cleanup subscription when component is destroyed
+        widget.PublicAPI.OnWorldClick.unsubscribe(this.handleWorldClick);
     },
     computed: {
         ...mapStores(useGlobalStore)
     },
     methods: {
+        handleWorldClick(event) {
+            console.log('World Click Event:', {
+                position: event.position,
+                normal: event.normal,
+                button: event.button,
+                pickedObject: event.pickedObject
+            });
+        },
         handleHeartClick() {
             this.clickCount++;
             this.message = `Clicked ${this.clickCount} times!`;
