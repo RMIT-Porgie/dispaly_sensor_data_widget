@@ -6,13 +6,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="autoRefresh" content="0" />
         <script type="text/javascript">
+            // var uwaPath;
+            // try {
+            //     uwaPath = widget.uwaUrl.substring(0, widget.uwaUrl.lastIndexOf("/") + 1);
+            // } catch (error) {
+            //     // when widget doesn't exist yet in standalone mode
+            //     uwaPath = "./";
+            // }
             var uwaPath;
             try {
-                uwaPath = widget.uwaUrl.substring(0, widget.uwaUrl.lastIndexOf("/") + 1);
+                uwaPath = widget && widget.uwaUrl ? widget.uwaUrl.substring(0, widget.uwaUrl.lastIndexOf("/") + 1) : "https://rmitvuewidget.netlify.app/"; // Fallback to absolute URL
             } catch (error) {
-                // when widget doesn't exist yet in standalone mode
-                uwaPath = "./";
+                uwaPath = "https://rmitvuewidget.netlify.app/"; // Ensure the correct path
             }
+            console.log("Computed uwaPath:", uwaPath);
+
             try {
                 // retrieve the version to load with a timestanp to prevent caching
                 // fetch(uwaPath + "static/version.json?ts=" + Date.now())
